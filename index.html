@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BuggyCart - QA Practice Sandbox</title>
+  <title>BuggyCart - E-Commerce Web Application</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -56,7 +56,7 @@
 
   <header>
     <h1>BuggyCart Testing Sandbox</h1>
-    <p>A QA practice page built with intentional functional and UI bugs for manual testing.</p>
+    <p>An interactive e-commerce web platform designed for end-to-end functional verification and user interface testing.</p>
   </header>
 
   <div class="grid">
@@ -150,30 +150,25 @@
       });
     }
 
-    // BUG 1: Inverted Sort Logic (Low-High sorts High-Low instead)
     function sortProducts() {
       const val = document.getElementById('sortSelect').value;
       if (val === 'low-high') {
-        products.sort((a, b) => b.price - a.price); // INTENTIONAL BUG
+        products.sort((a, b) => b.price - a.price);
       } else if (val === 'high-low') {
-        products.sort((a, b) => a.price - b.price); // INTENTIONAL BUG
+        products.sort((a, b) => a.price - b.price);
       }
       renderProducts(products);
     }
 
-    // BUG 2: Unsanitized search input (allows layout break or raw string injection)
     function filterProducts() {
       const query = document.getElementById('searchInput').value;
-      // INTENTIONAL BUG: Unescaped string insertion logic that renders raw HTML directly
       const filtered = rawProducts.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
       renderProducts(filtered);
     }
 
-    // BUG 3: Reset clears UI inputs but fails to reset internal product state
     function resetFilters() {
       document.getElementById('searchInput').value = '';
       document.getElementById('sortSelect').value = 'default';
-      // INTENTIONAL BUG: Doesn't re-render or reset array back to rawProducts
     }
 
     // --- CART LOGIC ---
@@ -194,7 +189,6 @@
 
     function removeFromCart(id) {
       cart = cart.filter(item => item.id !== id);
-      // BUG 5: Total price element is NOT updated when item is removed until a new item is added
       renderCartListOnly(); 
     }
 
@@ -225,7 +219,7 @@
     function updateTotal() {
       let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       if (discountApplied) {
-        total -= 100; // BUG 6: DISCOUNT10 subtracts flat $100 instead of 10%
+        total -= 100;
       }
       document.getElementById('cartTotal').innerText = `$${total.toFixed(2)}`;
     }
@@ -247,7 +241,6 @@
         status.className = "status-msg success";
         status.innerText = "Order placed successfully!";
         cart = [];
-        // BUG 7: Checkout clears array but does not clear total display or reset discount flag
       }
     }
 
@@ -255,16 +248,13 @@
     function handleRegister() {
       const age = document.getElementById('regAge').value;
       const status = document.getElementById('regStatus');
-      
-      // BUG 8: Negative age passes validation
+
       if (age !== "") {
         status.className = "status-msg success";
         status.innerText = "Account created successfully!";
       }
     }
 
-    // BUG 9: Submit button is hardcoded disabled in HTML and no event listener re-enables it
-    // BUG 10: Password input switches type to 'text' on focus revealing credentials in plain text
 
     // Initial Load
     renderProducts(products);
